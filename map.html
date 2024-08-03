@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Luxurious Automobile Manufacturing Company</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="./index.css" rel="stylesheet">
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container-fluid">
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <!-- SVG -->
+            <svg width="100" height="100" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+                <!-- Triangle -->
+                <polygon points="50,10 90,70 10,70" fill="none" stroke="#000000" stroke-width="1.5" />
+
+                <!-- Screw Head -->
+                <rect x="30" y="5" width="15" height="7.5" fill="#808080" stroke="#000000" stroke-width="1" />
+                <!-- Screw Slot -->
+                <rect x="34" y="7" width="7" height="4" fill="#000000" stroke="#000000" stroke-width="1" />
+                <!-- Screw Body -->
+                <rect x="34" y="12" width="7" height="35" fill="#808080" stroke="#000000" stroke-width="1" />
+                <!-- Screw Threads -->
+                <!-- Example of one thread -->
+                <line x1="34" y1="15" x2="41" y2="15" stroke="#000000" stroke-width="1" />
+                <!-- Add more lines if needed, or adjust as per actual design -->
+                <!-- Hammer -->
+                <g transform="rotate(15, 55, 55)">
+                    <!-- Hammer Handle -->
+                    <rect x="45" y="20" width="7" height="35" fill="#8B4513" stroke="#000000" stroke-width="1" />
+                    <!-- Hammer Head -->
+                    <!-- Top part of the head -->
+                    <rect x="40" y="10" width="20" height="7" fill="#808080" stroke="#000000" stroke-width="1" />
+
+                    <!-- Vertical part of the head -->
+                    <rect x="50" y="5" width="7" height="14" fill="#808080" stroke="#000000" stroke-width="1" />
+                </g>
+            </svg>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav mx-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="./index.html" aria-current="page">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="./about-us.html">About</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="./map.html">Location</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <div id="mycarousel" class="carousel slide" data-bs-ride="carousel">
+        <div class="carousel-indicators">
+            <button type="button" data-bs-target="#mycarousel" data-bs-slide-to="0" class="active" aria-current="true"
+                aria-label="Slide 1"></button>
+            <button type="button" data-bs-target="#mycarousel" data-bs-slide-to="1" aria-label="Slide 2"></button>
+            <button type="button" data-bs-target="#mycarousel" data-bs-slide-to="2" aria-label="Slide 3"></button>
+            <button type="button" data-bs-target="#mycarousel" data-bs-slide-to="3" aria-label="Slide 4"></button>
+        </div>
+        <div class="carousel-inner">
+            <div class="carousel-item active">
+                <img src="./images/1.jpg" class="d-block w-100" alt="...">
+            </div>
+            <div class="carousel-item">
+                <img src="./images/2.jpg" class="d-block w-100" alt="...">
+            </div>
+            <div class="carousel-item">
+                <img src="./images/3.jpg" class="d-block w-100" alt="...">
+            </div>
+            <div class="carousel-item">
+                <img src="./images/4.jpg" class="d-block w-100" alt="...">
+            </div>
+        </div>
+        <button class="carousel-control-prev" type="button" data-bs-target="#mycarousel" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#mycarousel" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+        </button>
+    </div>
+    <div class="container my-5">
+        <h1 class="text-center">Geoloc Demo</h1>
+        <div class="d-flex flex-column align-items-center">
+            <div class="info d-flex flex-column mb-3">
+                <p>Timestamp: <span id="timestamp"></span></p>
+                <p>Latitude: <span id="latitude"></span></p>
+                <p>Longitude: <span id="longitude"></span></p>
+                <p>Accuracy: <span id="accuracy"></span></p>
+                <p>Altitude: <span id="altitude"></span></p>
+            </div>
+            <button id="clickMe" class="btn btn-primary mb-3">Click me</button>
+            <div id="errorArea" class="alert alert-danger d-none"></div>
+            <div id="map" class="w-100"></div>
+        </div>
+
+        <script>
+            let map;
+            let marker;
+
+            function initializeMap(lat, lng) {
+                map = L.map("map").setView([lat, lng], 13);
+                L.tileLayer(
+                    "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+                    {
+                        attribution:
+                            '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+                    }
+                ).addTo(map);
+                marker = L.marker([lat, lng])
+                    .addTo(map)
+                    .bindPopup("You are here!")
+                    .openPopup();
+            }
+
+            function updateMap(lat, lng) {
+                if (map && marker) {
+                    map.setView([lat, lng], 13);
+                    marker.setLatLng([lat, lng]).update();
+                } else {
+                    initializeMap(lat, lng);
+                }
+            }
+
+            let getloc = document.getElementById("clickMe");
+            getloc.addEventListener("click", function () {
+                navigator.geolocation.getCurrentPosition(
+                    (pos) => {
+                        document.getElementById("timestamp").innerText =
+                            new Date(pos.timestamp).toLocaleString();
+                        document.getElementById("latitude").innerText =
+                            pos.coords.latitude;
+                        document.getElementById("longitude").innerText =
+                            pos.coords.longitude;
+                        document.getElementById("accuracy").innerText =
+                            pos.coords.accuracy + " meters";
+                        document.getElementById("altitude").innerText =
+                            pos.coords.altitude !== null
+                                ? pos.coords.altitude + " meters"
+                                : "N/A";
+                        updateMap(pos.coords.latitude, pos.coords.longitude);
+                    },
+                    (error) => {
+                        let msg = "";
+                        switch (error.code) {
+                            case error.PERMISSION_DENIED:
+                                msg = "User Denied Permission";
+                                break;
+                            case error.POSITION_UNAVAILABLE:
+                                msg = "Position is not available";
+                                break;
+                            case error.TIMEOUT:
+                                msg = "Request timed out";
+                                break;
+                            default:
+                                msg = "An unknown error occurred";
+                                break;
+                        }
+                        let errorArea = document.getElementById("errorArea");
+                        errorArea.innerText = msg;
+                        errorArea.classList.remove("d-none");
+                    }
+                );
+            });
+        </script>
+    </div>
+
+    <!-- Modals -->
+    <div class="modal fade" id="carsModal" tabindex="-1" aria-labelledby="carsModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="carsModalLabel">Cars</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    Visit our branch for more information
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="servicesModal" tabindex="-1" aria-labelledby="servicesModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="servicesModalLabel">Services</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    Visit our branch for more information
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="aboutModal" tabindex="-1" aria-labelledby="aboutModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="aboutModalLabel">About Us</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    Visit our branch for more information
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+
+</body>
+
+</html>
